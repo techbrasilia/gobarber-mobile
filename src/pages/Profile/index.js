@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Background from '~/components/Background';
@@ -9,8 +9,10 @@ import {
   FormInput,
   SubmitButton,
   Separator,
+  LogoutButton,
 } from './styles';
 import { updateProfileRequest } from '~/store/modules/user/actions';
+import { signOut } from '~/store/modules/auth/actions';
 
 const Profile = () => {
   const profile = useSelector((state) => state.user.profile);
@@ -19,8 +21,8 @@ const Profile = () => {
   const oldPasswordRef = useRef();
   const confirmPasswordRef = useRef();
 
-  const [name, setName] = useState(profile.name);
-  const [email, setEmail] = useState(profile.email);
+  const [name, setName] = useState(profile && profile.name);
+  const [email, setEmail] = useState(profile && profile.email);
   const [oldPassword, setOldPassword] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,6 +30,12 @@ const Profile = () => {
   const loading = useSelector((state) => state.auth.loading);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setOldPassword('');
+    setPassword('');
+    setConfirmPassword('');
+  }, [profile]);
 
   function handleSubmit() {
     dispatch(
@@ -39,6 +47,10 @@ const Profile = () => {
         confirmPassword,
       })
     );
+  }
+
+  function handleLogout() {
+    dispatch(signOut());
   }
 
   return (
@@ -105,9 +117,12 @@ const Profile = () => {
             onChangeText={setConfirmPassword}
           />
 
-          <SubmitButton loading={loading} onPress={() => handleSubmit()}>
+          <SubmitButton loading={loading} onPress={handleSubmit}>
             Atualizar Perfil
           </SubmitButton>
+          <LogoutButton loading={loading} onPress={handleLogout}>
+            Sair
+          </LogoutButton>
         </Form>
       </Container>
     </Background>
