@@ -6,7 +6,7 @@ import api from '~/services/api';
 export function* updateProfile({ payload }) {
   try {
     const { name, email, ...rest } = payload.data;
-    console.tron.log('atualizar: ', payload.data);
+
     const profile = Object.assign(
       { name, email },
       rest.oldPassword ? rest : {}

@@ -29,6 +29,7 @@ function NewTabs({ navigation }) {
           marginLeft: 20,
         },
       }}
+      initialRouteName="SelectProvider"
     >
       <AppStack.Screen
         name="SelectProvider"
@@ -55,6 +56,9 @@ function NewTabs({ navigation }) {
         name="SelectDateTime"
         component={SelectDateTime}
         options={{
+          headerTitleStyle: {
+            marginLeft: 20,
+          },
           headerTitle: 'Selecione a data e hora',
           headerLeft: () => (
             <>
@@ -73,6 +77,9 @@ function NewTabs({ navigation }) {
         name="Confirm"
         component={Confirm}
         options={{
+          headerTitleStyle: {
+            marginLeft: 20,
+          },
           headerTitle: 'Confirme o agendamento',
           headerLeft: () => (
             <>
@@ -103,6 +110,7 @@ export default Rotas = ({ isSignedIn = false, navigation }) => {
             {() => (
               <Tab.Navigator
                 screenOptions={({ route }) => ({
+                  unmountOnBlur: true,
                   tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
 
@@ -118,6 +126,7 @@ export default Rotas = ({ isSignedIn = false, navigation }) => {
                     return <Icon name={iconName} size={size} color={color} />;
                   },
                 })}
+                rese
                 tabBarOptions={{
                   keyboardHidesTabBar: true,
                   activeTintColor: '#FFF',

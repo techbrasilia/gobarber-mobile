@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 
 import api from '~/services/api';
 
@@ -9,16 +10,19 @@ import Appointment from '~/components/Appointment';
 
 export default function Dashboard() {
   const [appointments, setAppointments] = useState([]);
+  const isFocused = useIsFocused();
+
+  async function loadAppointments() {
+    const response = await api.get('appointments');
+
+    setAppointments(response.data);
+  }
 
   useEffect(() => {
-    async function loadAppointments() {
-      const response = await api.get('appointments');
-
-      setAppointments(response.data);
+    if (isFocused) {
+      loadAppointments();
     }
-
-    loadAppointments();
-  }, []);
+  }, [isFocused]);
 
   async function handleCancel(id) {
     const response = await api.delete(`appointments/${id}`);

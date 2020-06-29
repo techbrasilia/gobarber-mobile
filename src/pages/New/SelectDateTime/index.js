@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
 
 import Background from '~/components/Background';
 import DateInput from '~/components/DateInput';
@@ -7,7 +6,7 @@ import api from '~/services/api';
 
 import { Container, HourList, Hour, Title } from './styles';
 
-const SelectDateTime = (props, { navigation }) => {
+const SelectDateTime = (props) => {
   const [date, setDate] = useState(new Date());
   const [hours, setHours] = useState([]);
 
@@ -25,6 +24,14 @@ const SelectDateTime = (props, { navigation }) => {
     }
     loadAvailable();
   }, [date, provider.id]);
+
+  function handleSelectHour(time) {
+    props.navigation.navigate('Confirm', {
+      provider,
+      time,
+    });
+  }
+
   return (
     <Background>
       <Container>
@@ -34,7 +41,10 @@ const SelectDateTime = (props, { navigation }) => {
           data={hours}
           keyExtractor={(item) => item.time}
           renderItem={({ item }) => (
-            <Hour onPress={() => {}} enabled={item.available}>
+            <Hour
+              onPress={() => handleSelectHour(item.value)}
+              enabled={item.available}
+            >
               <Title>{item.time}</Title>
             </Hour>
           )}
